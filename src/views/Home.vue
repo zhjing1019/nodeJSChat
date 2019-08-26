@@ -13,12 +13,24 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import axios from "axios";
 
 @Component
 export default class Home extends Vue {
   private userName: string = '';
   private enterChat() {
-    this.$router.push('chat');
+    // this.$router.push('chat');
+    axios.post('api/login', {
+      loginName: this.userName,
+    })
+    .then(function (response) {
+      debugger;
+      console.log(response);
+    })
+    .catch(function (error) {
+      debugger;
+      console.log(error);
+    });
   }
 }
 </script>
