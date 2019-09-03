@@ -19,7 +19,6 @@ import axios from "axios";
 export default class Home extends Vue {
   private userName: string = '';
   private enterChat() {
-    debugger
     axios.post('api/login', {
       userName: this.userName
     })

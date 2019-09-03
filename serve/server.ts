@@ -34,7 +34,7 @@ const express = require('express'),
     }
   }
 
-  //登陆接口  
+  //登陆接口
   app.post('/api/login', function (req, res, next) {
 
     res.header("Access-Control-Allow-Origin", "*");
@@ -53,8 +53,11 @@ const express = require('express'),
   });
 
 io.sockets.on('connection', function (socket) {
+  console.log(1111);
+  socket.emit('open');  //通知客户端已连接
+
   //创建用户链接
-  socket.on('/api/login', (user)=> {
+  socket.on('login', (user)=> {
     if (kit.isHaveUser(user)) {
       console.log("登录失败！", user)
       socket.emit('loginFail', "登录失败,昵称已存在!");
