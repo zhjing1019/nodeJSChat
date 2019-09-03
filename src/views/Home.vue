@@ -19,9 +19,9 @@ import axios from "axios";
 export default class Home extends Vue {
   private userName: string = '';
   private enterChat() {
-    // this.$router.push('chat');
+    debugger
     axios.post('api/login', {
-      loginName: this.userName,
+      userName: this.userName
     })
     .then(function (response) {
       debugger;
@@ -31,6 +31,7 @@ export default class Home extends Vue {
       debugger;
       console.log(error);
     });
+
   }
 }
 </script>

@@ -1,28 +1,17 @@
+
+let users = [];
 const express = require('express'),
   app = express(),
   server = require('http').createServer(app),
   io = require('socket.io').listen(server),
-  session = require('express-session'),
-  FileStore = require('session-file-store')(session),
-  identityKey = 'skey',
-  //用于保存用户信息的数组
-  users = require('./user.ts').items;
-  app.use(session({
-    name: identityKey,
-    secret: 'chyingp', // 用来对session id相关的cookie进行签名
-    store: new FileStore(), // 本地存储session（文本文件，也可以选择其他store，比如redis的）
-    saveUninitialized: false, // 是否自动保存未初始化的会话，建议false
-    resave: false, // 是否每次都重新保存会话，建议false
-    cookie: {
-      maxAge: 10 * 1000 // 有效期，单位是毫秒
-    }
-  }));
+  bodyParser = require('body-parser'),
+  identityKey = 'skey';
 
-  let findUser = function(name){
-    return users.find(function(item){
-      return item.name === name;
-    });
-  };
+
+  // 添加json解析
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({extended: false}));
+
   
   let kit = {
     //判断用户是否存在
@@ -44,27 +33,28 @@ const express = require('express'),
       })
     }
   }
+
   //登陆接口  
-  app.post('/api/login', function (req, res) {
-    var sess = req.session;
-    var user = findUser(req.body.name);
-     
-    if(user){
-      req.session.regenerate(function(err) {
-      if(err){
-        return res.json({ret_code: 2, ret_msg: '登录失败'});        
-      }
-      req.session.loginUser = user.name;
-        res.json({ret_code: 0, ret_msg: '登录成功'});              
-      });
+  app.post('/api/login', function (req, res, next) {
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    // 获取参数
+    let query = req.body;
+    let isUser = kit.isHaveUser(query.userName);
+    if(isUser){
+      return res.json({ret_code: 2, ret_msg: '该用户名已存在，请重新输入用户名'});
+      next();
     }else{
-      res.json({ret_code: 1, ret_msg: '账号或密码错误'});
+      users.push(query.userName);
+      res.json({ret_code: 1, ret_msg: '登录成功'});
+      next();
     }
   });
 
 io.sockets.on('connection', function (socket) {
   //创建用户链接
-  socket.on('login', (user)=> {
+  socket.on('/api/login', (user)=> {
     if (kit.isHaveUser(user)) {
       console.log("登录失败！", user)
       socket.emit('loginFail', "登录失败,昵称已存在!");
