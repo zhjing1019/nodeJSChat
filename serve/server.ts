@@ -29,29 +29,28 @@ let users = [];
       })
     }
   }
-
-  //登陆接口
-  app.post('/api/login', function (req, res, next) {
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    // 获取参数
-    let query = req.body;
-    let isUser = kit.isHaveUser(query.userName);
-    if(isUser){
-      return res.json({ret_code: 2, ret_msg: '该用户名已存在，请重新输入用户名'});
-      next();
-    }else{
-      users.push(query.userName);
-      res.json({ret_code: 1, ret_msg: '登录成功'});
-      next();
-    }
-  });
+  //
+  // //登陆接口
+  // app.post('/api/login', function (req, res, next) {
+  //
+  //   res.header("Access-Control-Allow-Origin", "*");
+  //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //   // 获取参数
+  //   let query = req.body;
+  //   let isUser = kit.isHaveUser(query.userName);
+  //   if(isUser){
+  //     return res.json({ret_code: 2, ret_msg: '该用户名已存在，请重新输入用户名'});
+  //     next();
+  //   }else{
+  //     users.push(query.userName);
+  //     res.json({ret_code: 1, ret_msg: '登录成功'});
+  //     next();
+  //   }
+  // });
 
 io.sockets.on('connection', function (socket) {
-    debugger;
   console.log("1111用户已经连接上长链接了");
-      socket.emit('open');  //通知客户端已连接
+  socket.emit('open');  //通知客户端已连接
     //   //创建用户链接
   socket.on('login', (user)=> {
     if (kit.isHaveUser(user)) {
