@@ -1,18 +1,14 @@
-
+const express = require('express');
+const  app = express();
+const  server = require('http').createServer(app);
+const  io = require('socket.io').listen(server);
+const  bodyParser = require('body-parser');
 let users = [];
-const express = require('express'),
-  app = express(),
-  server = require('http').createServer(app),
-  io = require('socket.io').listen(server),
-  bodyParser = require('body-parser'),
-  identityKey = 'skey';
-
 
   // 添加json解析
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: false}));
 
-  
   let kit = {
     //判断用户是否存在
     isHaveUser(user) {
@@ -53,10 +49,10 @@ const express = require('express'),
   });
 
 io.sockets.on('connection', function (socket) {
-  console.log(1111);
-  socket.emit('open');  //通知客户端已连接
-
-  //创建用户链接
+    debugger;
+  console.log("1111用户已经连接上长链接了");
+      socket.emit('open');  //通知客户端已连接
+    //   //创建用户链接
   socket.on('login', (user)=> {
     if (kit.isHaveUser(user)) {
       console.log("登录失败！", user)
@@ -107,5 +103,5 @@ io.sockets.on('connection', function (socket) {
 });
 //启动服务器
 server.listen(3000, function () {
-  console.log("服务器已启动在：3000端口", "http://localhost:3000")
+  console.log("服务器已启动在：3000端口", "http://localhost:3000");
 });

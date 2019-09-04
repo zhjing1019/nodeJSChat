@@ -31,7 +31,25 @@ export default class Home extends Vue {
       console.log(error);
     });
 
-  }
+  };
+  @Component({
+
+    //（socket.on）绑定事件放在sockets中
+    sockets:{
+      // 创建连接
+      connect(){
+        console.log('连接成功啦')
+      },
+      // 监听自定义progress事件，需与服务端emit事件名一致
+      login(res){
+        console.log('2222',res)
+      },
+      groupMessage(res) {
+        console.log('333333', res)
+      }
+  })
+
+}
 }
 </script>
 <style lang="scss">
