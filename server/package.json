@@ -1,0 +1,30 @@
+{
+  "name": "ts-chat-ws",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
+    "build": "tsc --w",
+    "pm": "pm2 start dist/index.js"
+  },
+  "keywords": [
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "dependencies": {
+    "express": "^4.16.2",
+    "pm2": "^2.9.3",
+    "typescript": "^2.7.1",
+    "ws": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^4.0.0",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.14.11",
+    "ts-node": "^8.3.0",
+    "typescript": "^2.9.2"
+  }
+}
