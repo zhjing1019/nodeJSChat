@@ -24,6 +24,10 @@ export default {
 			state.user = user;
 			localStorage.setItem('user', JSON.stringify(user));
 		},
+		userLogin(this: any, state: any, username: string) {
+			state.user.name = username;
+			localStorage.setItem('user', JSON.stringify(state.user));
+		}
 	},
 	actions: {},
 };

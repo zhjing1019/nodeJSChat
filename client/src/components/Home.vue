@@ -13,55 +13,26 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import { mapState, mapMutations } from 'vuex';
-    import User from '../model/user';
-    import * as utils from '../utils/';
-    import config from '../config';
+    import { mapMutations } from 'vuex';
     @Component({
-        computed: {
-            ...mapState(['loginVisible']),
-        },
         methods: {
             ...mapMutations([
-                'updateUsername',
-                'toggleLogin',
-                'initUserInfo',
-                'sendMsg',
+                'userLogin'
             ]),
         },
     })
     export default class Home extends Vue {
         private username: string = '';
         private enterChat(this: any) {
-            if(this.userName) {
-                this.updateUsername(this.username);
+            debugger;
+            if(this.username) {
+                this.userLogin(this.username)
                 this.$router.push({ path: `/chat` });
-                this.toggleLogin(false);
+
+            } else {
+                alert("请输入昵称")
             }
         };
-        getUserInfo(this: any) {
-            let user;
-            let userInfo = localStorage.getItem('user');
-            if (userInfo) {
-                user = JSON.parse(userInfo);
-            } else {
-                const uuid = utils.uuid();
-                user = new User(uuid, this.getRandomName(), config.avatarApi + uuid);
-            }
-            this.initUserInfo(user);
-            this.username = user.name;
-        }
-        // getRandomName() {
-        //     function getRandomInt(min: number, max: number) {
-        //         min = Math.ceil(min);
-        //         max = Math.floor(max);
-        //         return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
-        //     }
-        //     return names[getRandomInt(0, 10)];
-        // }
-        created() {
-            this.getUserInfo();
-        }
     }
 </script>
 <style lang="scss">
