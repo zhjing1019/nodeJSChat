@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/components/Home.vue';
+import Home from '@/views/Home.vue';
 import Chat from '@/components/Chat.vue';
+import ChatHome from '@/views/ChatHome.vue';
 
 Vue.use(Router);
 
@@ -16,6 +17,11 @@ export default new Router({
 			path: '/chat',
 			name: 'Chat',
 			component: Chat,
-		}
+		},
+		{
+			path: '/chatHome',
+			name: 'ChatHome',
+			component: ChatHome,
+		},
 	],
 });

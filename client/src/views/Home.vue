@@ -1,6 +1,6 @@
 <template>
     <div class="home-main">
-        <img class="home-bg-img" src="./../assets/bg2.jpeg" alt="">
+        <img class="home-bg-img" src="../assets/bg2.jpeg" alt="">
         <div class="home-form">
             <h3>欢迎进入聊天室</h3>
             <div class="home-input-div">
@@ -36,7 +36,7 @@
     }
 </script>
 <style lang="scss">
-    @import "./../style/commonStyle.scss";
+    @import "../style/commonStyle";
     .home-main{
         max-width: $max-width;
         width: 100%;
