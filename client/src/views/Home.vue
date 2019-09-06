@@ -6,7 +6,7 @@
             <div class="home-input-div">
                 <input type="text" v-model="username" placeholder="请输入用户名">
             </div>
-            <button class="entry-btn" @click="enterChat()">进入群聊</button>
+            <button class="entry-btn" @click="enterChat">进入群聊</button>
         </div>
     </div>
 </template>

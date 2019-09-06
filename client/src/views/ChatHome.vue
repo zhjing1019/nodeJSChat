@@ -29,6 +29,14 @@
         methods: {
             ...mapMutations(['initWS', 'addMsg', 'sendMsg']),
         },
+        watch: {
+            user(val: any) {
+                console.log(val)
+            },
+            msgList(val: any) {
+                console.log(val);
+            }
+        }
     })
     export default class ChatHome extends Vue {
         public msgInput: string = '';

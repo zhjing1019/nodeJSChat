@@ -27,6 +27,11 @@ export default {
 		userLogin(this: any, state: any, username: string) {
 			state.user.name = username;
 			localStorage.setItem('user', JSON.stringify(state.user));
+			this.commit('sendMsg', {
+				type: 'join',
+				from: state.user,
+				content: '',
+			});
 		}
 	},
 	actions: {},

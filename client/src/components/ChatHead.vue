@@ -1,12 +1,21 @@
 <template>
     <div class="chat-head">
-        userName
+
     </div>
 </template>
 
 <script lang="ts">
-    export default {
-        name: "ChatHead"
+
+    import Vue from 'vue';
+    import Component from 'vue-class-component';
+    @Component
+    export default class ChatHead extends Vue {
+        // userName: string = localStorage.getItem("user");
+        // interface Person {
+        //     name: string;
+        // };
+        // public user: Person = localStorage.getItem("user");
+
     }
 </script>
 
