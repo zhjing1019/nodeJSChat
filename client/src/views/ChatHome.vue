@@ -1,15 +1,13 @@
 <template>
     <div class="chat-home">
         <chat-head></chat-head>
-        <mu-list class="msg-list">
-            <Message v-for="item in msgList" :key="item.id" v-bind="item"></Message>
-        </mu-list>
-        <mu-bottom-nav class="mag-input" :value="bottomNav">
-            <mu-text-field v-model="msgInput" class="inputFiled" label="Input your message here" labelFloat />
-            <mu-raised-button id="sendBtn" icon="send" @click="sendText"/>
-        </mu-bottom-nav>
-
-
+        <div class="msg-list-div">
+            <message-list v-for="item in msgList" :key="item.id" v-bind="item"></message-list>
+        </div>
+        <div class="msg-input">
+            <input type="text" v-model="msgInput" class="msg-input-detail">
+            <button class="msg-input-btn" @click="sendText">发送</button>
+        </div>
     </div>
 </template>
 
@@ -17,17 +15,19 @@
     import { Component, Vue } from 'vue-property-decorator';
     import ChatHead from '@/components/ChatHead.vue';
     import { mapState, mapMutations, mapGetters } from 'vuex';
-    import Message from '@/components/Message.vue'
+    import MessageList from '@/components/MessageList.vue'
+    import config from '../config';
 
     @Component({
         components: {
             ChatHead,
+            MessageList
         },
         computed: {
             ...mapState(['ws', 'msgList', 'user']),
         },
         methods: {
-            ...mapMutations(['toggleLogin', 'initWS', 'addMsg', 'sendMsg']),
+            ...mapMutations(['initWS', 'addMsg', 'sendMsg']),
         },
     })
     export default class ChatHome extends Vue {
@@ -44,6 +44,42 @@
             });
             this.msgInput = '';
         }
+        sendJoin(this: any) {
+            const user = this.user;
+            this.sendMsg({
+                type: 'join',
+                from: user,
+                content: '',
+            });
+        }
+        createSocket(this: any) {
+            this.initWS(new WebSocket(config.wsurl));
+            this.ws.onopen = (e: any) => {
+                console.log('connection established');
+                this.sendJoin();
+            };
+            this.ws.onmessage = (e: any) => {
+                const msg = JSON.parse(e.data);
+                this.$store.commit('addMsg', msg);
+                this.$nextTick(() => {
+                    try {
+                        const msgEl = document.querySelector('.msg-list > div:last-child');
+                        if (msgEl) msgEl.scrollIntoView();
+                    } catch (err) {
+                        console.error(err);
+                    }
+                });
+            };
+            this.ws.onerror = (error: any) => {
+                this.createSocket();
+            };
+        }
+        created() {
+            this.createSocket();
+        }
+        beforeDestroy(this: any) {
+            this.ws.close();
+        }
     }
 </script>
 
@@ -55,20 +91,37 @@
         height: $max-height;
         position: relative;
         margin: 0 auto;
-        .msg-list {
+        .msg-list-div {
             height: calc(100vh - 120px);
-            margin: 0 auto 50px;
             overflow: auto;
         }
         .msg-input {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            bottom: 0;
-            width: 80%;
-            left: 50%;
-            transform: translate(-50%, -20%);
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            padding: 0;
+            box-sizing: border-box;
+            border-top: 1px solid $border-color;
+            .msg-input-detail{
+                width: calc(100% - 60px);
+                outline: 0;
+                border: 0;
+                padding: 0 10px;
+                height: 60px;
+                line-height: 60px;
+            }
+            .msg-input-btn{
+                width: 60px;
+                border: 0;
+                border-left: 1px solid $border-color;
+                background: $default-color;
+                color: #fff;
+                font-weight: bold;
+                outline: 0;
+                height: 60px;
+                line-height: 60px;
+            }
+
         }
     }
 </style>

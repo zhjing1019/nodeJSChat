@@ -6,3 +6,10 @@ $btn-default-border: #eaeaea;
 $btn-bg-color: rgba(69, 87, 247, 0.2);
 $btn-bg-color-hover: rgba(69, 87, 247, 0.5);
 $default-color: #24292e;
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}

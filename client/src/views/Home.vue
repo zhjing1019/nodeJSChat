@@ -24,10 +24,9 @@
     export default class Home extends Vue {
         private username: string = '';
         private enterChat(this: any) {
-            debugger;
             if(this.username) {
                 this.userLogin(this.username)
-                this.$router.push({ path: `/chat` });
+                this.$router.push({ path: `/chatHome` });
 
             } else {
                 alert("请输入昵称")
@@ -64,15 +63,19 @@
             margin-left: -200px;
             margin-top: -100px;
             padding: 20px;
+            h3{
+                text-align: center;
+            }
             .home-input-div{
                 margin-top: 20px;
                 input{
                     width: 100%;
                     height: 32px;
-                    outline: 2px;
+                    outline: 0;
                     border-radius: 5px;
                     padding: 0 20px;
                     border: 1px solid $border-color;
+
                 }
             }
             .entry-btn{
@@ -83,9 +86,11 @@
                 border: 1px solid $border-color;
                 margin-top: 20px;
                 cursor: pointer;
+                outline: 0;
                 &:hover{
                     border: 1px solod $link-color;
-                    background: $btn-bg-color;
+                    background: $default-color;
+                    color: #fff;
                 }
             }
 
